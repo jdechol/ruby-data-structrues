@@ -1,4 +1,4 @@
-RSpec.describe LinkedList do
+RSpec.describe Jared::LinkedList do
   let(:cherries) { OpenStruct.new(key: 1, value: 'cherry') }
   let(:apples) { OpenStruct.new(key: 2, value: 'apples') }
 
