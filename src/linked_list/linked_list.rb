@@ -53,6 +53,15 @@ class LinkedList
     node.data
   end
 
+  def find_by(data)
+    node = head
+    node = node.next until node.data == data || node.next.nil?
+
+    raise StandardError, 'could not find element!' unless node.data == data
+
+    data
+  end
+
   def index_of(&block)
     _, index = find(&block)
     index
@@ -66,7 +75,21 @@ class LinkedList
 
   def remove(&block)
     node, = find(&block)
+    remove_node(node)
+  end
 
+  def remove_at(index)
+    raise StandardError("The index #{index} is out of range") if index >= length
+
+    node = head
+    index.times { node = node.next }
+
+    remove_node(node)
+  end
+
+  private
+
+  def remove_node(node)
     case node
     when head
       @head = head.next
@@ -80,8 +103,6 @@ class LinkedList
     @length -= 1
   end
 
-  private
-
   def find
     node = head
     index = 0
@@ -90,7 +111,7 @@ class LinkedList
       index += 1
     end
 
-    raise StandardError, "could not find element!" unless yield(node.data)
+    raise StandardError, 'could not find element!' unless yield(node.data)
 
     [node, index]
   end

@@ -88,13 +88,16 @@ RSpec.describe LinkedList do
   describe '#remove_at' do
     context 'when the index is in range' do
       it 'removes the data at the requested index' do
-
+        subject.remove_at(1)
+        expect(subject.length).to eq 1
+        expect(subject.find_by(cherries)).to eq cherries
+        expect { subject.find_by(apples) }.to raise_exception StandardError
       end
     end
 
     context 'when the index is not in range' do
       it 'raises an error' do
-
+        expect { subject.remove_at(2) }.to raise_exception StandardError
       end
     end
   end
