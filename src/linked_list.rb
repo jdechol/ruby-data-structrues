@@ -65,7 +65,7 @@ class LinkedList
     data
   end
 
-  def find_element(&block)
+  def get(&block)
     node, = find(&block)
     node.data
   end

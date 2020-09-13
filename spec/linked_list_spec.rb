@@ -55,12 +55,17 @@ RSpec.describe LinkedList do
     end
   end
 
-  describe '#find_element' do
+  describe '#get' do
     it 'can find values with a block' do
-      expect(subject.find_element { |data| data.key == 1 }).to eq(cherries)
-      expect(subject.find_element { |data| data.key == 2 }).to eq(apples)
-      expect { subject.find_element { |data| data.key == 4 } }
+      expect(subject.get { |data| data.key == 1 }).to eq(cherries)
+      expect(subject.get { |data| data.key == 2 }).to eq(apples)
+      expect { subject.get { |data| data.key == 4 } }
         .to raise_exception(StandardError)
+    end
+
+    it 'can set the value of elements it retrieves' do
+      subject.get { |data| data.key == 1 }.value = 'not cherry'
+      expect(subject.get { |data| data.key == 1 }.value).to eq 'not cherry'
     end
   end
 
