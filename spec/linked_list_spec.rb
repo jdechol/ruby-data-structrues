@@ -1,6 +1,3 @@
-require './src/linked_list/linked_list'
-require "ostruct"
-
 RSpec.describe LinkedList do
   let(:cherries) { OpenStruct.new(key: 1, value: 'cherry') }
   let(:apples) { OpenStruct.new(key: 2, value: 'apples') }
