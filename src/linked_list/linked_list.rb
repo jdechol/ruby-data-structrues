@@ -7,16 +7,20 @@ class LinkedList
     @length = data ? 1 : 0
   end
 
-  def add_last(data)
-    if tail.data.nil?
-      tail.data = data
-    else
-      current = tail
-      @tail = Node.new(data)
-      current.next = tail
-      tail.previous = current
-    end
-    @length += 1
+  def add_at(index, data)
+    raise StandardError("The index #{index} is out of range") if index > length
+
+    return add_first(data) if index.zero?
+    return add_last(data) if index == length
+
+    node = head
+    index.times { node = node.next }
+
+    new_node = Node.new(data)
+    new_node.next = node
+    new_node.previous = node.previous
+    node.previous = new_node
+    new_node.previous.next = new_node
   end
 
   def add_first(data)
@@ -31,16 +35,16 @@ class LinkedList
     @length += 1
   end
 
-  def add_at(index, data)
-    raise NotImplementedError
-  end
-
-  def get_first
-    head&.data
-  end
-
-  def get_last
-    raise NotImplementedError
+  def add_last(data)
+    if tail.data.nil?
+      tail.data = data
+    else
+      current = tail
+      @tail = Node.new(data)
+      current.next = tail
+      tail.previous = current
+    end
+    @length += 1
   end
 
   def clear
@@ -48,9 +52,8 @@ class LinkedList
     @tail = head
   end
 
-  def find_element(&block)
-    node, = find(&block)
-    node.data
+  def contains?(&block)
+    index_of(&block) != -1
   end
 
   def find_by(data)
@@ -62,15 +65,24 @@ class LinkedList
     data
   end
 
+  def find_element(&block)
+    node, = find(&block)
+    node.data
+  end
+
+  def get_first
+    head&.data
+  end
+
+  def get_last
+    tail&.data
+  end
+
   def index_of(&block)
     _, index = find(&block)
     index
   rescue StandardError
     -1
-  end
-
-  def contains?(&block)
-    index_of(&block) != -1
   end
 
   def remove(&block)

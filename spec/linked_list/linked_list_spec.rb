@@ -12,6 +12,39 @@ RSpec.describe LinkedList do
 
   subject { described_class.new }
 
+  describe '#add_at' do
+    let(:bananas) { OpenStruct.new(color: 'yellow', shape: 'moon') }
+
+    context 'when the index is zero' do
+      it 'defers to add_first' do
+        expect(subject).to receive(:add_first).with(bananas)
+        subject.add_at(0, bananas)
+      end
+    end
+
+    context 'when the index equals length' do
+      it 'defers to add_last' do
+        expect(subject).to receive(:add_last).with(bananas)
+        subject.add_at(2, bananas)
+      end
+    end
+
+    context 'when the index is in range' do
+      it 'adds the element at that position in the list' do
+        subject.add_at(1, bananas)
+        expect(subject.index_of{ |data| data.key == 1 }).to eq 0
+        expect(subject.index_of { |data| data.color == 'yellow' }).to eq 1
+        expect(subject.index_of { |data| data.key == 2 }).to eq 2
+      end
+    end
+
+    context 'when the index is not in range' do
+      it 'raises an error' do
+        expect { subject.add_at(3, bananas) }.to raise_exception StandardError
+      end
+    end
+  end
+
   describe '#add_first' do
     let(:oranges) { OpenStruct.new(key: 'basket', value: 'oranges') }
     before do
@@ -46,6 +79,22 @@ RSpec.describe LinkedList do
 
       it 'returns nil' do
         expect(subject.get_first).to eq nil
+      end
+    end
+  end
+
+  describe '#get_last' do
+    it 'returns the last value in the list' do
+      expect(subject.get_last).to eq apples
+    end
+
+    context 'when the list is empty' do
+      before do
+        subject.clear
+      end
+
+      it 'returns nil' do
+        expect(subject.get_last).to eq nil
       end
     end
   end
