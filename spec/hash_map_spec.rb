@@ -1,4 +1,4 @@
-RSpec.describe Jared::HashMap do
+RSpec.describe HashMap do
   describe '#put' do
     subject { described_class.new }
 
